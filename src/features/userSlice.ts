@@ -1,11 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { InitialUserState } from "../Types"; // 型をインポート
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+// ユーザーの型定義
 interface User {
-  name: string;
+  uid: string;
   email: string;
+  name: string | null;
+  photoURL: string | null;
+  displayName: string | null; // Firebase User から取得
 }
 
+// Reduxの初期状態
 interface UserState {
   user: User | null;
 }
@@ -15,22 +19,17 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
-    // ログイン時にユーザー情報を設定
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-    // ログアウト時にユーザー情報をnullに設定
     logout: (state) => {
       state.user = null;
     },
   },
 });
 
-// アクションをエクスポート
 export const { login, logout } = userSlice.actions;
-
-// リデューサーをエクスポート
 export default userSlice.reducer;

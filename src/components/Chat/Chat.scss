@@ -1,41 +1,63 @@
-.chat{
-  display:flex;
+.chat {
+  display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  height: 100vh;
+  flex-grow: 1; /* 横に広がるように設定 */
   background-color: #2f3136;
 }
 
-.chatMessage{
-  flex-grow: 1;
-  overflow-y: auto;
+.App {
+  display: flex;
+  height: 100vh; /* 画面全体の高さを確保 */
 }
 
-.chatInput{
-  display:flex;
+
+.chatHeader {
+  height: 60px;
+  background-color: #36393f;
+}
+
+.chatMessage {
+  flex-grow: 1; /* 残りの高さを占有する */
+  overflow-y: auto; /* スクロールを有効にする */
+  padding: 20px;
+}
+
+.chatInput {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: 10px;
   background-color: #474b53;
   border-radius: 5px;
-  margin: 20px;
-  color: lightgray;
-
-  form{
-    flex-grow: 1;
-    input{
-      padding: 15px;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      font-size: large;
-      font-weight: 100;
-      width: 100px;
-    }
-    .chatInputIcons{
-      .MuiSvgIcon-root {
-        padding: 5px;
-      }
-    }
-  }
+  margin: 0 20px 20px; /* 下部にスペースを追加 */
 }
+
+.chatInput form {
+  flex-grow: 1;
+  display: flex;
+  margin-left: 10px;
+}
+
+.chatInput input {
+  flex-grow: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.chatInputIcons {
+  display: flex;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.AppContainer {
+  display: flex;
+  height: 100vh; /* 画面全体の高さを占める */
+}
+
+

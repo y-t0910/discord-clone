@@ -1,39 +1,48 @@
-// App.tsx
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from './app/store'; // RootStateをインポート
-import './App.scss';
+import { useAppSelector, useAppDispatch } from './app/hooks';
+import { RootState } from './app/store';
+import { User } from 'firebase/auth'; // 正しいインポート
+import { auth } from './firebase';
+import { login, logout } from './features/userSlice';
+import Sidebar from './components/sidebar/Sidebar';
 import Chat from './components/Chat/Chat';
 import Login from './components/login/Login';
-import Sidebar from './components/sidebar/Sidebar';
-import { auth} from "./firebase"
-import { useAppDispatch } from './app/hooks';
-import { login } from './features/userSlice';
+import { ErrorBoundary } from 'react-error-boundary';
+import {ErrorFallBack} from "./utils/ErrorFallBack"
 
 function App() {
-  // Reduxからユーザー情報を型安全に取得
-  const user = useSelector((state: RootState) => state.user); // userをそのまま取得
-  //console.log('取得したユーザー:', user); // デバッグ用
+  const user = useAppSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch()
-  
   useEffect(() => {
-    auth.onAuthStateChanged((loginUser) => {
-      console.log(loginUser);
-      if(loginUser){
-         dispatch(login({
-        uid:  loginUser.uid,
-         }));
-     }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const loginUser = user as User;
+
+        dispatch(
+          login({
+            uid: loginUser.uid,
+            email: loginUser.email ?? 'default@example.com',
+            name: loginUser.displayName ?? 'Guest', // 'name'を'displayName'に一致させる
+            photoURL: loginUser.photoURL ?? '',
+            displayName: loginUser.displayName ?? 'Guest',
+          })
+        );
+      } else {
+        dispatch(logout());
+      }
     });
 
-  },[]);
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return (
     <div className="App">
-      {user ? (
+      {user ? ( // userが存在する場合にSidebarとChatを表示
         <>
+         <ErrorBoundary FallbackComponent={ErrorFallBack}>
           <Sidebar />
+        </ErrorBoundary>
           <Chat />
         </>
       ) : (
@@ -41,6 +50,7 @@ function App() {
       )}
     </div>
   );
+  
 }
 
 export default App;
