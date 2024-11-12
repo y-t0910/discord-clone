@@ -13,7 +13,7 @@ const SidebarChannel = (props: Props) => {
     <div className="sidebarChannel">
       <h4>
         <span className="sidebarChannelHash">#</span>
-        {channel}
+        
         </h4>
         
     </div>
