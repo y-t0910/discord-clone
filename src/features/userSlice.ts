@@ -11,12 +11,24 @@ interface User {
 
 // Reduxの初期状態
 interface UserState {
+  channelName: any;
   user: User | null;
 }
 
 const initialState: UserState = {
-  user: null, // 初期状態はnull
+  user: null,
+  channelName: undefined
 };
+
+export interface InitialUserState {
+ user: null | {
+  uid: string;
+  photo: string;
+  email : string;
+  displayName: string;
+  
+};
+}
 
 export const userSlice = createSlice({
   name: 'user',

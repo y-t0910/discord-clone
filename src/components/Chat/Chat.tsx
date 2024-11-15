@@ -4,8 +4,10 @@ import ChatHeader from './ChatHeader';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { CardGiftcard, Gif, EmojiEmotions } from '@mui/icons-material';
 import ChatMessage from './ChatMessage';
+import { useAppSelector } from '../../app/hooks';
 
 const Chat = () => {
+  const channelName = useAppSelector((state)  => state.channel.channelName);
   return (
     <div className="chat">
       {/* ヘッダー */}
