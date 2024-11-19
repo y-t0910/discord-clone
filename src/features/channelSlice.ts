@@ -19,6 +19,7 @@ interface UserState {
 
 const initialState: InitialChannelState = {
   channelId: null, // 初期状態はnull
+  
   channelName: null,
 };
 

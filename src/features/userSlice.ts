@@ -11,13 +11,15 @@ interface User {
 
 // Reduxの初期状態
 interface UserState {
+  channelId: any;
   channelName: any;
   user: User | null;
 }
 
 const initialState: UserState = {
   user: null,
-  channelName: undefined
+  channelName: undefined,
+  channelId: undefined
 };
 
 export interface InitialUserState {
