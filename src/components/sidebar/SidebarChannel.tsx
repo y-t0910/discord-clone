@@ -10,28 +10,20 @@ type Props = {
    channel:DocumentData;
   };
 
-const SidebarChannel = (props: Props) => {
-  const { id, channel } = props;
-  const dispatch = useAppDispatch()
-
-
-  return (
-    <div className="sidebarChannel" 
-      onClick={() =>
-        dispatch(
-          setChannelInfo({
-           channelaid: id,
-           channeName: channel.channel.channel
-      })
-        )
-      }>
-      <h4>
-        <span className="sidebarChannelHash">#</span>
-        
+  type SidebarChannelProps = {
+    channel: string;
+    id: string;
+  };
+  
+  const SidebarChannel = ({ channel, id }: SidebarChannelProps) => {
+    return (
+      <div className="channel">
+        <h4>
+          <span>#</span> {channel}
         </h4>
-        
-    </div>
-  );
-};
-
-export default SidebarChannel;
+      </div>
+    );
+  };
+  
+  export default SidebarChannel;
+  

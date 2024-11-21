@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import "./Sidebar.scss";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AddIcon from '@mui/icons-material/Add';
-import SidebarChannel from './SidebarChannel';
-import MicIcon from '@mui/icons-material/Mic';
-import HeadphonesIcon from '@mui/icons-material/Headphones';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { auth, db } from '../../firebase';
-import { useAppSelector } from '../../app/hooks';
-import useCollection from '../../hooks/useCollection';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddIcon from "@mui/icons-material/Add";
+import SidebarChannel from "./SidebarChannel";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useAppSelector } from "../../app/hooks";
+import useCollection from "../../hooks/useCollection";
+import { QuerySnapshot, DocumentData } from "firebase/firestore";
 
+type Channel = {
+  id: string;
+  channelName: string;
+};
 
 const Sidebar = () => {
   const user = useAppSelector((state) => state.user.user);
-  const {documents: channels} = useCollection("channels")
+  const channels: Channel[] = useCollection("channels");
+  const [newChannelName, setNewChannelName] = useState("");
+
+  const addChannel = async () => {
+    if (!newChannelName.trim()) return;
+    await addDoc(collection(db, "channels"), {
+      channelName: newChannelName,
+    });
+    setNewChannelName(""); // Clear input after adding channel
+  };
 
   return (
     <div className="Sidebar">
-      {/* sidebarLeft */}
+      {/* Sidebar left */}
       <div className="sidebarLeft">
-        <div className="serverIcon">
-          <img src="/logo192.png" alt="React Icon Small" />
-        </div>
-        <div className="serverIcon">
-          <img src="/logo192.png" alt="React Icon Large" />
-        </div>
+        <img className="serverIcon" src="/logo192.png" alt="React Icon Small" />
+        <img className="serverIcon" src="/logo512.png" alt="React Icon Large" />
       </div>
 
       {/* Discord部分 */}
@@ -34,19 +42,32 @@ const Sidebar = () => {
           <ExpandMoreIcon />
         </div>
 
+        {/* チャンネル追加セクション */}
+        <div className="addChannelSection">
+          <input
+            type="text"
+            value={newChannelName}
+            onChange={(e) => setNewChannelName(e.target.value)}
+            placeholder="新しいチャンネル名を入力"
+          />
+          <button onClick={addChannel}>
+            <AddIcon /> チャンネルを追加
+          </button>
+        </div>
+
         {/* プログラミングチャンネルリスト */}
         <div className="sidebarChannels">
           <div className="sidebarHeader">
-          <ExpandMoreIcon />
+            <ExpandMoreIcon />
             <h4>プログラミングチャンネル</h4>
-            </div>
-            
+          </div>
+
           <div className="sidebarChannelList">
             {channels.map((channel) => (
-              <SidebarChannel 
-              key={channel.id} 
-              channel={channel} 
-              id={channel.id} 
+              <SidebarChannel
+                key={channel.id}
+                channel={channel.channelName}
+                id={channel.id}
               />
             ))}
           </div>
@@ -57,8 +78,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-function setChannels(channelsResults: { id: any; channel: any; }[]) {
-  throw new Error('Function not implemented.');
-}
-

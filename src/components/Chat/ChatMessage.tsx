@@ -1,17 +1,25 @@
-import React from 'react'
-import "./ChatMessage.scss"
+import React from 'react';
+import './ChatMessage.scss';
 import { Avatar } from '@mui/material';
-const ChatMessage = () => {
-  return <div className="message">
-       <Avatar />
-       <div className="messageInfo"></div>
-       <h4>
-        Shin Code
-        <span className="messageTimestamp">2024/10/19</span>
+
+type ChatMessageProps = {
+  user: string;
+  message: string;
+  timestamp: any; // Adjust the type accordingly if needed
+};
+
+const ChatMessage = ({ user, message, timestamp }: ChatMessageProps) => {
+  return (
+    <div className="message">
+      <Avatar />
+      <div className="messageInfo">
+        <h4>
+          {user} <span className="messageTimestamp">{timestamp?.toDate().toLocaleString()}</span>
         </h4>
+        <p>{message}</p>
+      </div>
+    </div>
+  );
+};
 
-        <p>メッセージ本文</p>
-  </div>
-}
-
-export default ChatMessage
+export default ChatMessage;
