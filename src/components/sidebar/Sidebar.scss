@@ -38,7 +38,7 @@
   .accountName {
     margin-right: 20px; /* テキストとアイコンの間に余白 */
   }
-  
+
   .sidebarVoice {
     display: flex;
     align-items: center;  /* アイコンを中央に揃える */
@@ -47,7 +47,6 @@
   .sidebarVoice > * {
     margin-left: 10px;  /* アイコン同士の間隔を設定 */
 
-  
  }
  }
 
@@ -116,4 +115,27 @@
    }
  }
  
- 
+ .channelTitle {
+  color: #8e9297;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  margin: 0;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 5px;
+}
+
+.sidebarChannels {
+  padding-left: 10px;
+}
+
+.customPosition {
+  position: relative;
+  top: 50px; /* Adjust vertical position */
+  left: 20px; /* Adjust horizontal position */
+}

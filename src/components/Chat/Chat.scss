@@ -6,23 +6,6 @@
   background-color: #2f3136;
 }
 
-.App {
-  display: flex;
-  height: 100vh; /* 画面全体の高さを確保 */
-}
-
-
-.chatHeader {
-  height: 60px;
-  background-color: #36393f;
-}
-
-.chatMessage {
-  flex-grow: 1; /* 残りの高さを占有する */
-  overflow-y: auto; /* スクロールを有効にする */
-  padding: 20px;
-}
-
 .chatInput {
   display: flex;
   align-items: center;

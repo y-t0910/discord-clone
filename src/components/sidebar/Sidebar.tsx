@@ -55,25 +55,27 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* プログラミングチャンネルリスト */}
-        <div className="sidebarChannels">
-          <div className="sidebarHeader">
-            <ExpandMoreIcon />
-            <h4>プログラミングチャンネル</h4>
-          </div>
-
-          <div className="sidebarChannelList">
-            {channels.map((channel) => (
-              <SidebarChannel
-                key={channel.id}
-                channel={channel.channelName}
-                id={channel.id}
-              />
-            ))}
-          </div>
+    {/* プログラミングチャンネルリスト */}
+    　
+    <div className="sidebarChannels">
+      <div className="customPosition">
+        <div className="sidebarHeader">
+          <ExpandMoreIcon />
+          <h3 className="channelTitle">プログラミングチャンネル</h3>
         </div>
       </div>
+      <div className="sidebarChannelList">
+        {channels.map((channel) => (
+          <SidebarChannel
+            key={channel.id}
+            channel={channel.channelName}
+            id={channel.id}
+          />
+        ))}
+      </div>
     </div>
+  </div>
+</div>
   );
 };
 
