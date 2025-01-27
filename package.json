@@ -9,11 +9,10 @@
     "@mui/material": "^6.1.2",
     "@reduxjs/toolkit": "^2.3.0",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.112",
-    "@types/react": "^18.3.11",
+    "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.0",
     "@types/react-redux": "^7.1.34",
     "diagnostics_channel": "^1.1.0",
@@ -50,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.2.0"
   }
 }
