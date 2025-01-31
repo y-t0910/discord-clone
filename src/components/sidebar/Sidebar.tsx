@@ -8,6 +8,7 @@ import { db } from "../../firebase";
 import { useAppSelector } from "../../app/hooks";
 import useCollection from "../../hooks/useCollection";
 import { QuerySnapshot, DocumentData } from "firebase/firestore";
+import { useModal } from "../../app/use-modal-store";
 
 type Channel = {
   id: string;
@@ -15,16 +16,13 @@ type Channel = {
 };
 
 const Sidebar = () => {
+  const { onOpen } = useModal();
   const user = useAppSelector((state) => state.user.user);
   const channels: Channel[] = useCollection("channels");
-  const [newChannelName, setNewChannelName] = useState("");
 
-  const addChannel = async () => {
-    if (!newChannelName.trim()) return;
-    await addDoc(collection(db, "channels"), {
-      channelName: newChannelName,
-    });
-    setNewChannelName(""); // Clear input after adding channel
+  const handleCreateChannel = () => {
+    console.log("Opening channel modal"); // デバッグ用
+    onOpen("createChannel");
   };
 
   return (
@@ -42,40 +40,32 @@ const Sidebar = () => {
           <ExpandMoreIcon />
         </div>
 
-        {/* チャンネル追加セクション */}
-        <div className="addChannelSection">
-          <input
-            type="text"
-            value={newChannelName}
-            onChange={(e) => setNewChannelName(e.target.value)}
-            placeholder="新しいチャンネル名を入力"
-          />
-          <button onClick={addChannel}>
-            <AddIcon /> チャンネルを追加
-          </button>
+        {/* プログラミングチャンネルリスト */}
+        <div className="sidebarChannels">
+          <div className="customPosition">
+            <div className="sidebarHeader">
+              <button 
+                className="addChannelButton"
+                onClick={handleCreateChannel}
+              >
+                <AddIcon />
+              </button>
+              <ExpandMoreIcon />
+              <h3 className="channelTitle">プログラミングチャンネル</h3>
+            </div>
+          </div>
+          <div className="sidebarChannelList">
+            {channels.map((channel) => (
+              <SidebarChannel
+                key={channel.id}
+                channel={channel.channelName}
+                id={channel.id}
+              />
+            ))}
+          </div>
         </div>
-
-    {/* プログラミングチャンネルリスト */}
-    　
-    <div className="sidebarChannels">
-      <div className="customPosition">
-        <div className="sidebarHeader">
-          <ExpandMoreIcon />
-          <h3 className="channelTitle">プログラミングチャンネル</h3>
-        </div>
-      </div>
-      <div className="sidebarChannelList">
-        {channels.map((channel) => (
-          <SidebarChannel
-            key={channel.id}
-            channel={channel.channelName}
-            id={channel.id}
-          />
-        ))}
       </div>
     </div>
-  </div>
-</div>
   );
 };
 

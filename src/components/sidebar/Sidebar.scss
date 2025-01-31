@@ -88,6 +88,28 @@
   display: flex;
   align-items: center; // テキストとアイコンを縦方向で中央揃え
   justify-content: space-between; // テキストとアイコンを両端に配置
+  justify-content: flex-start;
+  padding: 10px;
+  
+  .addChannelButton {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+      color: white;
+    }
+  }
+
+  .channelTitle {
+    flex-grow: 1;
+    margin-left: 5px;
+  }
 }
 
 

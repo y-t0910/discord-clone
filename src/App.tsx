@@ -9,6 +9,8 @@ import Chat from './components/Chat/Chat';
 import Login from './components/login/Login';
 import { ErrorBoundary } from 'react-error-boundary';
 import {ErrorFallBack} from "./utils/ErrorFallBack"
+import { CreateChannelModal } from './components/modals/create-channel-modal';
+import { ModalProvider } from './app/modal-provider';
 
 function App() {
   const user = useAppSelector((state: RootState) => state.user);
@@ -44,6 +46,7 @@ function App() {
           <Sidebar />
         </ErrorBoundary>
           <Chat />
+          <ModalProvider />
         </>
       ) : (
         <Login />
