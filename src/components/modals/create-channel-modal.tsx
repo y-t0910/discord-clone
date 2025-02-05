@@ -1,46 +1,22 @@
 import React from 'react';
 import { useModal } from '../../app/use-modal-store';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { useAppDispatch } from '../../app/hooks';
 import './create-channel-modal.scss';
-import { useAppSelector } from '../../app/hooks';
 
 export const CreateChannelModal = () => {
   const { isOpen, type, onClose } = useModal();
   const [channelName, setChannelName] = React.useState('');
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
 
   const isModalOpen = isOpen && type === "createChannel";
-  
-  console.log("Modal state:", { isOpen, type, isModalOpen }); // デバッグ用
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting form with name:", channelName); // デバッグ用
-    
-    if (!channelName.trim() || isSubmitting) return;
+    if (!channelName.trim()) return;
 
-    try {
-      setIsSubmitting(true);
-      const docRef = await addDoc(collection(db, "channels"), {
-        channelName: channelName,
-        createdAt: serverTimestamp(),
-        createdBy: {
-          uid: user?.uid,
-          displayName: user?.displayName,
-          photoURL: user?.photoURL
-        }
-      });
-      console.log("Channel created with ID:", docRef.id); // デバッグ用
-
-      setChannelName('');
-      onClose();
-    } catch (error) {
-      console.error("Error adding channel:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    dispatch(addChannel({ name: channelName }));
+    setChannelName('');
+    onClose();
   };
 
   if (!isModalOpen) return null;
@@ -66,9 +42,9 @@ export const CreateChannelModal = () => {
             <button 
               type="submit" 
               className="create-button" 
-              disabled={isSubmitting || !channelName.trim()}
+              disabled={!channelName.trim()}
             >
-              {isSubmitting ? '作成中...' : '作成'}
+              作成
             </button>
           </div>
         </form>
@@ -76,3 +52,8 @@ export const CreateChannelModal = () => {
     </div>
   );
 };
+
+function addChannel(arg0: { name: string; }): any {
+  throw new Error('Function not implemented.');
+}
+

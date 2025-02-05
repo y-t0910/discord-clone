@@ -1,89 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { addDoc, collection, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase';
+import React, { useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { addMessage } from '../../features/channelSlice';
 import './Chat.scss';
 
 const Chat = () => {
-  const [messages, setMessages] = useState<any[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputText, setInputText] = useState('');
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
-  const channelId = useAppSelector((state) => state.channel.channelId);
-  const channelName = useAppSelector((state) => state.channel.channelName);
+  const currentChannelId = useAppSelector((state) => state.channel.currentChannelId);
+  const channels = useAppSelector((state) => state.channel.channelId);
+  const currentChannel = channels.find((ch: { id: any; }) => ch.id === currentChannelId);
 
-  useEffect(() => {
-    if (channelId) {
-      const q = query(
-        collection(db, 'channels', channelId, 'messages'),
-        orderBy('timestamp', 'asc')
-      );
-
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const newMessages = snapshot.docs.map(doc => ({
-          id: doc.id,
-          data: doc.data()
-        }));
-        setMessages(newMessages);
-      });
-
-      return () => unsubscribe();
-    }
-  }, [channelId]);
-
-  const sendMessage = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (inputMessage.trim() === '' || !channelId) return;
+    if (!inputText.trim() || !currentChannelId) return;
 
-    try {
-      const messageRef = collection(db, 'channels', channelId, 'messages');
-      await addDoc(messageRef, {
-        message: inputMessage,
-        timestamp: serverTimestamp(),
-        user: {
-          uid: user?.uid,
-          displayName: user?.displayName,
-          photoURL: user?.photoURL,
-        }
-      });
-      setInputMessage('');
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+    dispatch(addMessage({
+      channelId: currentChannelId,
+      content: inputText,
+      user: {
+        displayName: user?.displayName || 'Guest',
+        photoURL: user?.photoURL || '/default-avatar.png'
+      }
+    }));
+
+    setInputText('');
   };
 
   return (
     <div className="chat">
       <div className="chatHeader">
-        <h3>#{channelName || 'チャンネルを選択してください'}</h3>
+        <h3>#{currentChannel?.name || 'チャンネルを選択してください'}</h3>
       </div>
 
       <div className="chatMessages">
-        {messages.map(({ id, data }) => (
-          <div key={id} className="message">
-            <img src={data.user.photoURL || "/default-avatar.png"} alt="" />
+        {currentChannel?.messages.map((message: { id: React.Key | null | undefined; user: { photoURL: string | undefined; displayName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; timestamp: { toLocaleString: () => string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
+          <div key={message.id} className="message">
+            <img src={message.user.photoURL} alt="" />
             <div className="messageInfo">
               <h4>
-                {data.user.displayName}
+                {message.user.displayName}
                 <span className="timestamp">
-                  {data.timestamp?.toDate().toLocaleString()}
+                  {message.timestamp.toLocaleString()}
                 </span>
               </h4>
-              <p>{data.message}</p>
+              <p>{message.content}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <form onSubmit={sendMessage} className="chatInput">
+      <form onSubmit={handleSubmit} className="chatInput">
         <input
           type="text"
-          disabled={!channelId}
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          placeholder={channelId ? `#${channelName}へメッセージを送信` : 'チャンネルを選択してください'}
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder={currentChannel ? `#${currentChannel.name}へメッセージを送信` : 'チャンネルを選択してください'}
+          disabled={!currentChannelId}
         />
-        <button type="submit" disabled={!channelId || !inputMessage.trim()}>
+        <button type="submit" disabled={!currentChannelId || !inputText.trim()}>
           送信
         </button>
       </form>

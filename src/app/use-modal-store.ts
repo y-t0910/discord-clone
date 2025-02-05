@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 export type ModalType = "createChannel" | "deleteChannel";
 
@@ -13,7 +13,6 @@ export const useModal = create<ModalStore>((set) => ({
   type: null,
   isOpen: false,
   onOpen: (type) => {
-    console.log("Opening modal with type:", type); // デバッグ用
     set({ isOpen: true, type });
   },
   onClose: () => set({ isOpen: false, type: null }),

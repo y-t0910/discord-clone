@@ -11,6 +11,7 @@ interface User {
 
 // Reduxの初期状態
 interface UserState {
+  [x: string]: any;
   channelId: any;
   channelName: any;
   user: User | null;
