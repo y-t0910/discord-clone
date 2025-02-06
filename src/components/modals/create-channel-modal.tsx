@@ -1,6 +1,7 @@
 import React from 'react';
 import { useModal } from '../../app/use-modal-store';
 import { useAppDispatch } from '../../app/hooks';
+import { addChannel } from '../../features/channelSlice';  
 import './create-channel-modal.scss';
 
 export const CreateChannelModal = () => {
@@ -17,7 +18,7 @@ export const CreateChannelModal = () => {
     dispatch(addChannel({ name: channelName }));
     setChannelName('');
     onClose();
-  };
+  };  
 
   if (!isModalOpen) return null;
 
@@ -52,8 +53,4 @@ export const CreateChannelModal = () => {
     </div>
   );
 };
-
-function addChannel(arg0: { name: string; }): any {
-  throw new Error('Function not implemented.');
-}
 

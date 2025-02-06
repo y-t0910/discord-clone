@@ -1,38 +1,72 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {  InitialChannelState } from "../Types"
+import { RootState } from '../app/store';
 
-
-// ユーザーの型定義
-interface User {
-  uid: string;
-  email: string;
-  name: string | null;
-  photoURL: string | null;
-  displayName: string | null; // Firebase User から取得
+interface Message {
+  id: string;
+  content: string;
+  timestamp: Date;
+  user: {
+    displayName: string;
+    photoURL: string;
+  };
 }
 
-// Reduxの初期状態
-interface UserState {
-  user: User | null;
+interface Channel {
+  id: string;
+  name: string;
+  messages: Message[];
 }
 
+interface ChannelState {
+  channels: Channel[];
+  currentChannelId: string | null;
+}
 
-const initialState: InitialChannelState = {
-  channelId: null, // 初期状態はnull
-  
-  channelName: null,
+const initialState: ChannelState = {
+  channels: [],
+  currentChannelId: null
 };
 
 export const channelSlice = createSlice({
   name: 'channel',
   initialState,
   reducers: {
-    setChannelInfo :(state,action) => {
-         state.channelId = action.payload.channelId;
-         state.channelName = action.payload.channelName;
+    addChannel: (state, action: PayloadAction<{ name: string }>) => {
+      const newChannel = {
+        id: Date.now().toString(),
+        name: action.payload.name,
+        messages: []
+      };
+      state.channels.push(newChannel);
+      state.currentChannelId = newChannel.id;
     },
- },
+    setCurrentChannel: (state, action: PayloadAction<string>) => {
+      state.currentChannelId = action.payload;
+    },
+    addMessage: (state, action: PayloadAction<{
+      channelId: string;
+      content: string;
+      user: {
+        displayName: string;
+        photoURL: string;
+      };
+    }>) => {
+      const channel = state.channels.find(ch => ch.id === action.payload.channelId);
+      if (channel) {
+        channel.messages.push({
+          id: Date.now().toString(),
+          content: action.payload.content,
+          timestamp: new Date(),
+          user: action.payload.user
+        });
+      }
+    }
+  }
 });
 
-export const { setChannelInfo } = channelSlice.actions;
+export const { addChannel, setCurrentChannel, addMessage } = channelSlice.actions;
 export default channelSlice.reducer;
+
+export const selectChannels = (state: RootState) => state.channel.channels;
+export const selectCurrentChannel = (state: RootState) => 
+  state.channel.channels.find((channel: Channel) => channel.id === state.channel.currentChannelId);

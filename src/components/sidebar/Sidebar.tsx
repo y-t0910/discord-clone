@@ -1,29 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Sidebar.scss";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import SidebarChannel from "./SidebarChannel";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useAppSelector } from "../../app/hooks";
-import useCollection from "../../hooks/useCollection";
-import { QuerySnapshot, DocumentData } from "firebase/firestore";
 import { useModal } from "../../app/use-modal-store";
-
-type Channel = {
-  id: string;
-  channelName: string;
-};
 
 const Sidebar = () => {
   const { onOpen } = useModal();
   const user = useAppSelector((state) => state.user.user);
-  const channels: Channel[] = useCollection("channels");
-
-  const handleCreateChannel = () => {
-    console.log("Opening channel modal"); // デバッグ用
-    onOpen("createChannel");
-  };
+  const channels = useAppSelector((state) => state.channel?.channels) || [];
 
   return (
     <div className="Sidebar">
@@ -46,7 +32,7 @@ const Sidebar = () => {
             <div className="sidebarHeader">
               <button 
                 className="addChannelButton"
-                onClick={handleCreateChannel}
+                onClick={() => onOpen("createChannel")}
               >
                 <AddIcon />
               </button>
@@ -55,10 +41,10 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="sidebarChannelList">
-            {channels.map((channel) => (
+            {Array.isArray(channels) && channels.map((channel) => (
               <SidebarChannel
                 key={channel.id}
-                channel={channel.channelName}
+                channel={channel.name}
                 id={channel.id}
               />
             ))}

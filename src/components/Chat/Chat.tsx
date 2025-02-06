@@ -3,13 +3,25 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { addMessage } from '../../features/channelSlice';
 import './Chat.scss';
 
+interface MessageUser {
+  displayName: string;
+  photoURL: string;
+}
+
+interface Message {
+  id: string;
+  content: string;
+  timestamp: number;
+  user: MessageUser;
+}
+
 const Chat = () => {
   const [inputText, setInputText] = useState('');
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
-  const currentChannelId = useAppSelector((state) => state.channel.currentChannelId);
-  const channels = useAppSelector((state) => state.channel.channelId);
-  const currentChannel = channels.find((ch: { id: any; }) => ch.id === currentChannelId);
+  const currentChannelId = useAppSelector((state) => state.channel?.currentChannelId);
+  const channels = useAppSelector((state) => state.channel?.channels) || [];
+  const currentChannel = channels?.find((ch: { id: any; }) => ch.id === currentChannelId);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,20 +46,20 @@ const Chat = () => {
       </div>
 
       <div className="chatMessages">
-        {currentChannel?.messages.map((message: { id: React.Key | null | undefined; user: { photoURL: string | undefined; displayName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; timestamp: { toLocaleString: () => string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-          <div key={message.id} className="message">
-            <img src={message.user.photoURL} alt="" />
-            <div className="messageInfo">
-              <h4>
-                {message.user.displayName}
-                <span className="timestamp">
-                  {message.timestamp.toLocaleString()}
-                </span>
-              </h4>
-              <p>{message.content}</p>
-            </div>
-          </div>
-        ))}
+                {currentChannel?.messages?.map((message: Message) => (
+                  <div key={message.id} className="message">
+                    <img src={message.user.photoURL} alt="" />
+                    <div className="messageInfo">
+                      <h4>
+                        {message.user.displayName}
+                        <span className="timestamp">
+                          {new Date(message.timestamp).toLocaleString()}
+                        </span>
+                      </h4>
+                      <p>{message.content}</p>
+                    </div>
+                  </div>
+                ))}
       </div>
 
       <form onSubmit={handleSubmit} className="chatInput">
