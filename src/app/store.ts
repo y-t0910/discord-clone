@@ -1,14 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
-import { typographyClasses } from "@mui/material";
-import channelReducer from '../features/userSlice';
+import channelReducer from '../features/channelSlice';
 
 export const store = configureStore({
-    reducer: {
-   user: userReducer,
-   channel: channelReducer
-    },
+  reducer: {
+    user: userReducer,
+    channel: channelReducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false // シリアライズチェックを無効化
+    }),
 });
 
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

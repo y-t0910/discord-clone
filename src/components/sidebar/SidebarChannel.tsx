@@ -1,12 +1,10 @@
 import React from 'react';
 import './SidebarChannel.scss';
-import { DocumentData } from 'firebase/firestore';
 import { channel } from 'diagnostics_channel';
 import { useAppDispatch } from '../../app/hooks';
 
 type Props = {
    id: string;
-   channel:DocumentData;
   };
 
   type SidebarChannelProps = {
