@@ -2,22 +2,22 @@ import React from 'react';
 import './ChatMessage.scss';
 import { Avatar } from '@mui/material';
 
-type ChatMessageProps = {
+interface ChatMessageProps {
   user: string;
   message: string;
-  timestamp: any; // Adjust the type accordingly if needed
-};
+  timestamp: string;
+}
 
-const ChatMessage = ({ user, message, timestamp }: ChatMessageProps) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ user, message, timestamp }) => {
   return (
-    <div className="message">
-      <Avatar />
-      <div className="messageInfo">
-        <h4>
-          {user} <span className="messageTimestamp">{timestamp?.toDate().toLocaleString()}</span>
-        </h4>
-        <p>{message}</p>
+    <div className="chatMessage">
+      <div className="chatMessage-header">
+        <span className="chatMessage-user">{user}</span>
+        <span className="chatMessage-time">
+          {new Date(timestamp).toLocaleString()}
+        </span>
       </div>
+      <p className="chatMessage-text">{message}</p>
     </div>
   );
 };

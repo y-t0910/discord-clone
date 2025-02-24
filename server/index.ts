@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
+import { initSocket } from './socket';
 
 const app = express();
 app.use(cors());
@@ -41,7 +43,9 @@ app.post('/api/messages', (req, res) => {
   return res.status(201).json(newMessage);
 });
 
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const server = http.createServer(app);
+initSocket(server);
+
+server.listen(3001, () => {
+  console.log('Server running on http://localhost:3001');
 });

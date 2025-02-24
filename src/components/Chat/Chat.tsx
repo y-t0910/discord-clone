@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import ChatMessage from "./ChatMessage";
+import "./Chat.scss";
+import io from "socket.io-client";
 
 type Message = {
   id: string;
@@ -12,6 +14,8 @@ type Message = {
   };
   timestamp: string;
 };
+
+const socket = io("http://localhost:3001");
 
 const Chat = () => {
   const [inputText, setInputText] = useState("");
@@ -31,25 +35,31 @@ const Chat = () => {
       });
   }, [currentChannelId]);
 
+  useEffect(() => {
+    socket.on("receiveMessage", (newMessage: Message) => {
+      setMessages((prev) => [...prev, newMessage]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, []);
+
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim() || !currentChannelId) return;
 
     try {
-      const response = await fetch("http://localhost:3001/api/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          channelId: currentChannelId,
-          content: inputText,
-          user: {
-            displayName: user?.displayName,
-            photoURL: user?.photoURL
-          }
-        }),
-      });
-      const newMessage: Message = await response.json();
-      setMessages((prev) => [...prev, newMessage]);
+      const messageData = {
+        channelId: currentChannelId,
+        content: inputText,
+        user: {
+          displayName: user?.displayName,
+          photoURL: user?.photoURL
+        },
+        timestamp: new Date().toISOString()
+      };
+      socket.emit("sendMessage", messageData);
       setInputText("");
     } catch (error) {
       console.error("Error sending message:", error);
