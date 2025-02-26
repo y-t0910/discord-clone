@@ -43,9 +43,18 @@ app.post('/api/messages', (req, res) => {
   return res.status(201).json(newMessage);
 });
 
+// APIルートの追加
+app.get('/', (req, res) => {
+  res.send('Discord Clone API is running');
+});
+
 const server = http.createServer(app);
 initSocket(server);
 
-server.listen(3001, () => {
-  console.log('Server running on http://localhost:3001');
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// 明示的なエクスポート（ModuleJS対応）
+export default app;
