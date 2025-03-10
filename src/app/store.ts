@@ -9,7 +9,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false // シリアライズチェックを無効化
+      serializableCheck: false 
     }),
 });
 
