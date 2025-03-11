@@ -13,17 +13,17 @@ export const CreateChannelModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submit clicked, channelName:', channelName); // デバッグ用
+    console.log('Submit clicked, channelName:', channelName); 
 
     if (!channelName.trim()) return;
 
     try {
       dispatch(addChannel({ name: channelName.trim() }));
-      console.log('Channel created successfully'); // デバッグ用
+      console.log('Channel created successfully'); 
       setChannelName('');
       onClose();
     } catch (error) {
-      console.error('Error creating channel:', error); // エラーハンドリング
+      console.error('Error creating channel:', error);
     }
   };  
 
