@@ -1,6 +1,5 @@
 import React from 'react';
 import './SidebarChannel.scss';
-import { channel } from 'diagnostics_channel';
 import { useAppDispatch } from '../../app/hooks';
 
 type Props = {
@@ -14,13 +13,13 @@ type Props = {
   
   const SidebarChannel = ({ channel, id }: SidebarChannelProps) => {
     return (
-      <div className="channel">
+      <div className="SidebarChannel">
         <h4>
-          <span>#</span> {channel}
+          <span className='SidebarChannelHash'>#</span> 
+          {channel}
         </h4>
       </div>
     );
   };
   
   export default SidebarChannel;
-  

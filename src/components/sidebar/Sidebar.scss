@@ -11,64 +11,46 @@
    align-items: center;
    background-color: #1c1b29;
    padding: 7px 15px;
+
+   .serverIcon {
+    width: 55px;
+    height: 55px;
+    background-color: gray;
+    border-radius: 50%; /* 円形にする */
+    margin-bottom: 10px;
+    display: flex; /* 子要素を中央に配置するために flex を使用 */
+    align-items: center; /* 縦方向に中央揃え */
+    justify-content: center; /* 横方向に中央揃え */
+    margin-top: 7px;
+    
+   
+    
+  }
  }
 
  .sidebarRight{
    background-color: #292841;
    width: 300px;
-   position:relative;
-   flex-grow: 1;
 
-   .sidebarFooter {
+   .sidebarTop {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #ffffff;
+
+    .sidebarFooter {
     display: flex;
     align-items: center;  /* 縦方向を中央揃え */
     justify-content: space-between;  /* 必要に応じて間隔を調整 */
     padding: 10px;
     position: absolute; /* 絶対位置に配置 */
   bottom: 0; /* 画面の一番下に配置 */
+
+  .sidebarChannels {
+    padding: 10px;
+    color: white;
+    padding-left: 10px;
   }
-  
-  .sidebarFooter img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;  /* 丸いアイコンにする */
-    margin-right: 10px;  /* 画像とテキストの間に余白 */
-  }
-  
-  .accountName {
-    margin-right: 20px; /* テキストとアイコンの間に余白 */
-  }
-
-  .sidebarVoice {
-    display: flex;
-    align-items: center;  /* アイコンを中央に揃える */
-  }
-  
-  .sidebarVoice > * {
-    margin-left: 10px;  /* アイコン同士の間隔を設定 */
-
- }
- }
-
- .sidebarTop h3 {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0;
-  color: #ffffff;
-}
-
-.udemyList {
-  margin: 20px 0; /* Udemy部分の上下に余白を追加 */
-}
-.sidebarHeader h4 {
-  margin: 0;
-  font-size: 16px;
-  color: white;
-}
-
-.sidebarChannels {
-  padding: 10px;
-  color: white;
 }
 
 .sidebarChannelsHeader {
@@ -76,88 +58,28 @@
   align-items: center;  /* 縦方向中央揃え */
   justify-content: space-between; /* テキストとアイコンを両端に配置 */
   padding: 10px;
-}
-
-.sidebarChannelsHeader h4 {
-  margin: 0;
-  font-size: 16px;
-  color: white;
-}
-
-.sidebarHeader {
-  display: flex;
-  align-items: center; // テキストとアイコンを縦方向で中央揃え
-  justify-content: space-between; // テキストとアイコンを両端に配置
-  justify-content: flex-start;
-  padding: 10px;
-  
-  .addChannelButton {
-    background: none;
-    border: none;
-    color: gray;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    
-    &:hover {
-      color: white;
-    }
-  }
-
-  .channelTitle {
-    flex-grow: 1;
-    margin-left: 5px;
+    margin: 0;
+    font-size: 16px;
+    color: white;
   }
 }
 
-
-.sidebarHeader .MuiSvgIcon-root {
-  margin-left: 10px; // アイコンとテキストの距離を調整
+.sidebarHeader  {
+  display: flex;
+  margin-top: 5px;
   font-size: 16px;
   color: white;
-}
- 
- .serverIcon {
-   width: 55px;
-   height: 55px;
-   background-color: gray;
-   border-radius: 50%; /* 円形にする */
-   margin-bottom: 10px;
-   display: flex; /* 子要素を中央に配置するために flex を使用 */
-   align-items: center; /* 縦方向に中央揃え */
-   justify-content: center; /* 横方向に中央揃え */
-   margin-top: 7px;
-   
-  
-   img {
-     width: 50px; /* 画像の横幅を指定 */
-     height: 50px; /* 画像の縦幅を指定 */
-   }
- }
- 
- .channelTitle {
-  color: #8e9297;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: left;
-  margin: 0;
-}
+  justify-content: space-between;
+  }
 
-.sidebarHeader {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  gap: 5px;
-}
+  .sidebarFooter {
+    position: absolute;
+    bottom:0%;
+    border-radius: 50%;  
+    margin-right: 10px;  
+    border-top: 1px solid #686a6e;
+    align-items: center; 
 
-.sidebarChannels {
-  padding-left: 10px;
-}
+  }
+  }
 
-.customPosition {
-  position: relative;
-  top: 50px; /* Adjust vertical position */
-  left: 20px; /* Adjust horizontal position */
-}
