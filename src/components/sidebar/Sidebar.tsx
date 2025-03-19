@@ -62,7 +62,7 @@ const Sidebar = () => {
           <div>
             <img 
               src={user?.photoURL || "/default-avatar.png"} 
-              alt="User Avatar" 
+              alt="ユーザー" 
             />
             <span className="accountName">{user?.displayName || "ユーザー名"}</span>
           </div>

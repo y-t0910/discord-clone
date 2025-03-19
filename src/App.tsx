@@ -14,7 +14,9 @@ function App() {
     <div className="App">
       {user ? (
         <ErrorBoundary FallbackComponent={ErrorFallBack}>
+          {/* Sidebar */}
           <Sidebar />
+          {/*Chat */}
           <Chat />
           <ModalProvider />
         </ErrorBoundary>
